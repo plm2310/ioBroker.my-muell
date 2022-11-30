@@ -1,0 +1,376 @@
+{
+	"common": {
+		"name": "my-muell",
+		"version": "0.0.1",
+		"news": {
+			"0.0.1": {
+				"en": "initial release",
+				"de": "Erstveröffentlichung",
+				"ru": "Начальная версия",
+				"pt": "lançamento inicial",
+				"nl": "Eerste uitgave",
+				"fr": "Première version",
+				"it": "Versione iniziale",
+				"es": "Versión inicial",
+				"pl": "Pierwsze wydanie",
+				"zh-cn": "首次出版"
+			}
+		},
+		"title": "My Müll",
+		"titleLang": {
+			"en": "My Müll",
+			"de": "Mein Müll",
+			"ru": "Мой Мюль",
+			"pt": "Meu Müll",
+			"nl": "Mijn Müll",
+			"fr": "Mon Mull",
+			"it": "Il mio Mull",
+			"es": "mi mull",
+			"pl": "Moja Müll",
+			"zh-cn": "我的缪尔"
+		},
+		"desc": {
+			"en": "Use unoffical API https://mymuell.jumomind.com/mmapp/api.php to read MyMüll waste schedule",
+			"de": "Verwenden Sie die inoffizielle API https://mymuell.jumomind.com/mmapp/api.php, um den MyMüll-Abfallplan zu lesen",
+			"ru": "Используйте неофициальный API https://mymuell.jumomind.com/mmapp/api.php, чтобы прочитать расписание отходов MyMüll.",
+			"pt": "Use a API não oficial https://mymuell.jumomind.com/mmapp/api.php para ler a programação de resíduos do MyMüll",
+			"nl": "Gebruik onofficiële API https://mymuell.jumomind.com/mmapp/api.php om het afvalschema van MyMüll te lezen",
+			"fr": "Utilisez l'API non officielle https://mymuell.jumomind.com/mmapp/api.php pour lire le calendrier des déchets MyMüll",
+			"it": "Usa l'API non ufficiale https://mymuell.jumomind.com/mmapp/api.php per leggere il programma dei rifiuti di MyMüll",
+			"es": "Utilice la API no oficial https://mymuell.jumomind.com/mmapp/api.php para leer el calendario de residuos de MyMüll",
+			"pl": "Użyj nieoficjalnego API https://mymuell.jumomind.com/mmapp/api.php, aby przeczytać harmonogram odpadów MyMüll",
+			"zh-cn": "使用非官方 API https://mymuell.jumomind.com/mmapp/api.php 阅读 MyMüll 废物时间表"
+		},
+		"authors": [
+			"Michael Ploch <miploch@gmail.com>"
+		],
+		"keywords": [
+			"trash schedule",
+			"waste schedule",
+			"myMuell"
+		],
+		"license": "MIT",
+		"platform": "Javascript/Node.js",
+		"main": "main.js",
+		"icon": "my-muell.png",
+		"enabled": true,
+		"extIcon": "https://raw.githubusercontent.com/plm2310/ioBroker.my-muell/main/admin/my-muell.png",
+		"readme": "https://github.com/plm2310/ioBroker.my-muell/blob/main/README.md",
+		"loglevel": "info",
+		"mode": "schedule",
+		"schedule": "*/5 * * * *",
+		"allowInit": true,
+		"type": "misc-data",
+		"compact": true,
+		"connectionType": "cloud",
+		"dataSource": "poll",
+		"adminUI": {
+			"config": "json"
+		},
+		"dependencies": [
+			{
+				"js-controller": ">=3.3.22"
+			}
+		],
+		"globalDependencies": [
+			{
+				"admin": ">=5.1.13"
+			}
+		]
+	},
+	"native": {
+		"areaId": 1984,
+		"cityId": 1984
+	},
+	"objects": [],
+	"instanceObjects": [
+		{
+			"_id": "rawDataJson",
+			"type": "state",
+			"common": {
+				"name": {
+						  "en": "Raw Data JSON",
+						  "de": "Rohdaten JSON",
+						  "ru": "Сырые данные ДЖСОН",
+						  "pt": "Dados brutos J",
+						  "nl": "Raw Data JSON",
+						  "fr": "Données brutes JSON",
+						  "it": "Dati crudi JSON",
+						  "es": "Datos brutos JSON",
+						  "pl": "Raw JSON",
+						  "uk": "Сирі дані Сонце",
+						  "zh-cn": "数据 附 件"
+						},
+				"desc": {
+					"en": "JSON return value from last API-CAll",
+					"de": "JSON Rückgabewert von letzten API-CAll",
+					"ru": "Значение возврата JSON от последнего API-CAll",
+					"pt": "Valor de retorno JSON da última API-CAll",
+					"nl": "JSON geeft de waarde van de laatste API-CAll",
+					"fr": "Valeur de retour JSON de la dernière API-CAll",
+					"it": "Valore di ritorno JSON dall'ultima API-CAll",
+					"es": "Valor de retorno de JSON del último API-CAll",
+					"pl": "JSON zwraca wartość z ostatniego API-CAll",
+					"uk": "JSON повертає значення з останнього API-CAll",
+					"zh-cn": "联合联索会从最后一个非统化方案返回其价值"
+				  },
+				"type": "string",
+				"role": "json",
+				"read": true,
+				"write": false
+			},
+			"native": {}
+		},
+		{
+			"_id": "waste",
+			"type": "folder",
+			"common": {
+				"name": {
+					"en": "waste",
+					"de": "Mülltonne",
+					"ru": "отходы",
+					"pt": "resíduos",
+					"nl": "verspilling",
+					"fr": "déchets",
+					"it": "rifiuti",
+					"es": "desechos",
+					"pl": "odpad",
+					"uk": "відходи",
+					"zh-cn": "废弃物"
+				  },
+				"desc": {
+					"en": "waste",
+					"de": "Mülltonne",
+					"ru": "отходы",
+					"pt": "resíduos",
+					"nl": "verspilling",
+					"fr": "déchets",
+					"it": "rifiuti",
+					"es": "desechos",
+					"pl": "odpad",
+					"uk": "відходи",
+					"zh-cn": "废弃物"
+				  }
+			},
+			"native": {}
+		},
+		{
+			"_id": "next",
+			"type": "device",
+			"common": {
+				"name": {
+					"en": "next Date",
+					"de": "nächstes Datum",
+					"ru": "следующий Дата",
+					"pt": "data seguinte",
+					"nl": "volgende datum",
+					"fr": "date suivante",
+					"it": "data successiva",
+					"es": "siguiente Fecha",
+					"pl": "date",
+					"uk": "дата",
+					"zh-cn": "下一个日期"
+				  },
+				"desc": {
+					"en": "next Date",
+					"de": "nächstes Datum",
+					"ru": "следующий Дата",
+					"pt": "data seguinte",
+					"nl": "volgende datum",
+					"fr": "date suivante",
+					"it": "data successiva",
+					"es": "siguiente Fecha",
+					"pl": "date",
+					"uk": "дата",
+					"zh-cn": "下一个日期"
+				  }
+			},
+			"native": {}
+		},
+		{
+			"_id": "next.name",
+			"type": "state",
+			"common": {
+				"name": {
+					"en": "Name",
+					"de": "Bezeichnung",
+					"ru": "Имя",
+					"pt": "Nome",
+					"nl": "Naam",
+					"fr": "Nom",
+					"it": "Nome",
+					"es": "Nombre",
+					"pl": "Nazwa",
+					"uk": "Ім'я",
+					"zh-cn": "姓名"
+				  },
+				"desc": {
+					"en": "next type of waste to be collected",
+					"de": "nächste Abfalltonne, die abgeholt wird",
+					"ru": "следующий Вид отходов, который нужно собрать",
+					"pt": "próximo Tipo de resíduos a recolher",
+					"nl": "volgende. Een verspilling om te verzamelen",
+					"fr": "suivant Type de déchets à collecter",
+					"it": "prossimo Tipo di rifiuti da raccogliere",
+					"es": "siguiente Tipo de desechos que se recogerán",
+					"pl": "następnego dnia Typ odpadów został zebrany",
+					"uk": "головна Види відходів, зібрані",
+					"zh-cn": "下表 收集的废物类型"
+				  },
+				"type": "string",
+				"role": "text",
+				"read": true,
+				"write": false
+			},
+			"native": {}
+		},
+		{
+			"_id": "next.color",
+			"type": "state",
+			"common": {
+				"name": {
+					"en": "Color",
+					"de": "Farbe",
+					"ru": "Цвет",
+					"pt": "Cor",
+					"nl": "Color",
+					"fr": "Couleur",
+					"it": "Colore",
+					"es": "Color",
+					"pl": "Color",
+					"uk": "Колір",
+					"zh-cn": "科 法 律"
+				  },
+				"desc": {
+					"en": "Color of trash can",
+					"de": "Farbe des Mülltonne",
+					"ru": "Цвет мусора может",
+					"pt": "Cor de lata de lixo",
+					"nl": "Kleur van vuilnis kan",
+					"fr": "Couleur de la poubelle",
+					"it": "Colore della spazzatura",
+					"es": "Color de la basura",
+					"pl": "Kolor śmieciowy",
+					"uk": "Колір сміття може",
+					"zh-cn": "坠落可以"
+				  },
+				"type": "string",
+				"role": "level.color.rgb",
+				"read": true,
+				"write": false
+			},
+			"native": {}
+		},
+		{
+			"_id": "next.date",
+			"type": "state",
+			"common": {
+				"name": {
+					"en": "Date",
+					"de": "Datum",
+					"ru": "Дата",
+					"pt": "Data",
+					"nl": "Datum",
+					"fr": "Date",
+					"it": "Data",
+					"es": "Fecha",
+					"pl": "D",
+					"uk": "Дата",
+					"zh-cn": "日期"
+				  },
+				"desc": {
+					"en": "next collection date",
+					"de": "nächster Abholtermin",
+					"ru": "следующая дата коллекции",
+					"pt": "próxima data de coleta",
+					"nl": "volgende verzameldatum",
+					"fr": "prochaine date de collecte",
+					"it": "prossima data di raccolta",
+					"es": "próxima fecha de recogida",
+					"pl": "kolejna data",
+					"uk": "дата збору",
+					"zh-cn": "下一个收集日期"
+				  },
+				"type": "string",
+				"role": "date",
+				"read": true,
+				"write": false
+			},
+			"native": {}
+		},
+		{
+			"_id": "next.desc",
+			"type": "state",
+			"common": {
+				"name": {
+					"en": "description",
+					"de": "Beschreibung",
+					"ru": "описание",
+					"pt": "descrição",
+					"nl": "beschrijving",
+					"fr": "description",
+					"it": "descrizione",
+					"es": "descripción",
+					"pl": "opis",
+					"uk": "опис",
+					"zh-cn": "说明"
+				  },
+				"desc": {
+					"en": "description",
+					"de": "Beschreibung",
+					"ru": "описание",
+					"pt": "descrição",
+					"nl": "beschrijving",
+					"fr": "description",
+					"it": "descrizione",
+					"es": "descripción",
+					"pl": "opis",
+					"uk": "опис",
+					"zh-cn": "说明"
+				  },
+				"type": "string",
+				"role": "text",
+				"read": true,
+				"write": false
+			},
+			"native": {}
+		},
+		{
+			"_id": "next.type",
+			"type": "state",
+			"common": {
+				"name": {
+					"en": "Type",
+					"de": "Art",
+					"ru": "Тип",
+					"pt": "Tipo",
+					"nl": "Type",
+					"fr": "Type",
+					"it": "Tipo",
+					"es": "Tipo",
+					"pl": "Typ",
+					"uk": "Тип",
+					"zh-cn": "类型"
+				  },
+				"desc": {
+					"en": "Type",
+					"de": "Art",
+					"ru": "Тип",
+					"pt": "Tipo",
+					"nl": "Type",
+					"fr": "Type",
+					"it": "Tipo",
+					"es": "Tipo",
+					"pl": "Typ",
+					"uk": "Тип",
+					"zh-cn": "类型"
+				  },
+				"type": "string",
+				"role": "text",
+				"read": true,
+				"write": false
+			},
+			"native": {}
+		}
+	]
+}

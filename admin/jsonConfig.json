@@ -1,0 +1,16 @@
+{
+	"i18n": true,
+	"type": "panel",
+	"items": {
+		"areaId": {
+			"type": "number",
+			"label": "AreaID",
+			"newLine": true
+		},
+		"cityId": {
+			"type": "number",
+			"label": "CityID",
+			"newLine": true
+		}
+	}
+}
