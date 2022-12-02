@@ -159,7 +159,6 @@ class MyMuell extends utils.Adapter {
 
 			// check next element for each Type
 			//Build List per Type for Next Date
-
 			if (nextByType.has(element.trash_name)==true){
 				//Mülltonne schon bekannt, frühestes Datum prüfen
 				if(nextByType.get(element.trash_name).day > element.day){
@@ -182,7 +181,6 @@ class MyMuell extends utils.Adapter {
 			await this.setStateAsync('next.desc', { val: nextElement.description , ack: true });
 			await this.setStateAsync('next.type', { val: nextElement.trash_name , ack: true });
 		}
-
 		this.log.debug (`Start create / Update states for each waste type`);
 
 		let objectid = '';
