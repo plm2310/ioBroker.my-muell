@@ -7,8 +7,8 @@
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
 const utils = require('@iobroker/adapter-core');
-const axios = require('axios');
-const { isNumberObject } = require('util/types');
+const axios = require('axios').default;
+
 
 // Load your modules here, e.g.:
 // const fs = require("fs");
@@ -56,7 +56,7 @@ class MyMuell extends utils.Adapter {
 			const url = `https://mymuell.jumomind.com/mmapp/api.php?r=dates&city_id=${this.config.cityId}&area_id=${this.config.areaId}`;
 			this.log.debug('API-Call:' + url);
 			const res = await axios.get(url);
-			this.processMyMuellData(res.data);
+			await this.processMyMuellData(res.data);
 
 
 		} catch (error) {
@@ -145,8 +145,9 @@ class MyMuell extends utils.Adapter {
 
 		await this.setStateAsync('rawDataJson', { val: JSON.stringify(data), ack: true });
 
-		let nextElement;
-		let nextByType = new Array();
+		let /** @type {any} */ nextElement;
+		const nextByType = new Map();
+
 		//Loop all Trash Items from MyMuell
 		data.forEach((/** @type {any} */ element) => {
 			this.log.debug(`process line ${JSON.stringify(element)}`);
@@ -158,23 +159,22 @@ class MyMuell extends utils.Adapter {
 
 			// check next element for each Type
 			//Build List per Type for Next Date
-			if (nextByType.hasOwnProperty(element.trash_name)==true){
+
+			if (nextByType.has(element.trash_name)==true){
 				//Mülltonne schon bekannt, frühestes Datum prüfen
-				if(nextByType[element.trash_name].day > element.day){
-					nextByType[element.trash_name] = element;
+				if(nextByType.get(element.trash_name).day > element.day){
+					nextByType.set(element.trash_name, element);
 				}
 			}else{
 				//neuer Typ als ersten Eintrag hinzufügen
-				nextByType[element.trash_name] = element;
+				nextByType.set(element.trash_name, element);
 			}
-
-
 		});
 
 		//Set next trash to be collected
 		if (nextElement != null){
 
-			this.log.debug (`next Collection: ${JSON.stringify(nextElement)}`);
+			this.log.debug (`Update States for next Collection: ${JSON.stringify(nextElement)}`);
 			// Set States for next Date:
 			await this.setStateAsync('next.name', { val: nextElement.title , ack: true });
 			await this.setStateAsync('next.color', { val: nextElement.color , ack: true });
@@ -183,19 +183,27 @@ class MyMuell extends utils.Adapter {
 			await this.setStateAsync('next.type', { val: nextElement.trash_name , ack: true });
 		}
 
-		//Set Trash by Type
-		nextByType.forEach(async (/** @type {any} */ element) => {
-			this.log.debug(`nextByType ${JSON.stringify(element)}`);
-			let objectid = 'waste.' + element.trash_name;
+		this.log.debug (`Start create / Update states for each waste type`);
 
+		let objectid = '';
+		//Set loop over collection with each type and create states and update values
+		for (const key of nextByType.keys()) {
+			const trashItem = nextByType.get(key);
+			this.log.debug (`waste type ${key}: ${JSON.stringify(trashItem)}`);
+
+			//create states for each type
+			objectid = 'waste.' + key;
+
+			//Create device Folder by Type
 			await this.setObjectNotExistsAsync(objectid, {
 				type: 'device',
 				common: {
-					name: element.title,
+					name: trashItem.title,
 				},
 				native: {},
 			});
 
+			//create and set color
 			await this.setObjectNotExistsAsync(objectid + '.color', {
 				type: 'state',
 				common: {
@@ -207,19 +215,23 @@ class MyMuell extends utils.Adapter {
 				},
 				native: {},
 			});
+			await this.setStateAsync(objectid + '.color', { val: trashItem.color , ack: true });
 
+			//create and set name
 			await this.setObjectNotExistsAsync(objectid + '.name', {
 				type: 'state',
 				common: {
 					name: 'Name',
 					type: 'string',
-					role: 'string',
+					role: 'text',
 					read: true,
 					write: false,
 				},
 				native: {},
 			});
+			await this.setStateAsync(objectid + '.name', { val: trashItem.title , ack: true });
 
+			//create and set next date
 			await this.setObjectNotExistsAsync(objectid + '.next_date', {
 				type: 'state',
 				common: {
@@ -231,7 +243,9 @@ class MyMuell extends utils.Adapter {
 				},
 				native: {},
 			});
+			await this.setStateAsync(objectid + '.next_date', { val: trashItem.day , ack: true });
 
+			//create and set description
 			await this.setObjectNotExistsAsync(objectid + '.next_desc', {
 				type: 'state',
 				common: {
@@ -243,9 +257,9 @@ class MyMuell extends utils.Adapter {
 				},
 				native: {},
 			});
+			await this.setStateAsync(objectid + '.next_desc', { val: trashItem.description , ack: true });
 
-		});
-
+		}
 	}
 
 }
