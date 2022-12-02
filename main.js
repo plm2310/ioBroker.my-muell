@@ -55,9 +55,15 @@ class MyMuell extends utils.Adapter {
 			*/
 			const url = `https://mymuell.jumomind.com/mmapp/api.php?r=dates&city_id=${this.config.cityId}&area_id=${this.config.areaId}`;
 			this.log.debug('API-Call:' + url);
-			const res = await axios.get(url);
-			await this.processMyMuellData(res.data);
+			const res = await axios.get(url, { headers: { Accept: 'application/json', 'Accept-Encoding': 'identity' }, params: { trophies: true } });
 
+			if (res.status == 200){
+				//if status is ok, than process data
+				this.log.info (`API Call return: ${res.statusText} statuscode: ${res.status}`);
+				await this.processMyMuellData(res.data);
+			} else {
+				this.log.error (`Error on API Call. Return: ${res.statusText} statuscode: ${res.status}`);
+			}
 
 		} catch (error) {
 			// Handle errors
