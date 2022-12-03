@@ -376,6 +376,44 @@
                 "write": false
             },
             "native": {}
+        },
+        {
+            "_id": "next.countdown",
+            "type": "state",
+            "common": {
+                "name": {
+                    "en": "Countdown",
+                    "de": "Countdown",
+                    "ru": "Отсчет",
+                    "pt": "Contagem",
+                    "nl": "Aftellen",
+                    "fr": "Compte à rebours",
+                    "it": "Conteggio",
+                    "es": "Cuenta atrás",
+                    "pl": "Countdown",
+                    "uk": "Відправити",
+                    "zh-cn": "倒数"
+                },
+                "desc": {
+                    "en": "Countdown in days",
+                    "de": "Countdown in Tagen",
+                    "ru": "Отсчет в дни",
+                    "pt": "Contagem regressiva em dias",
+                    "nl": "Aftellen in dagen",
+                    "fr": "Compte à rebours en jours",
+                    "it": "Conto alla rovescia nei giorni",
+                    "es": "Cuenta atrás en días",
+                    "pl": "Countdown w dni",
+                    "uk": "Відлік в день",
+                    "zh-cn": "A. 日内降"
+                },
+                "type": "number",
+                "role": "value.interval",
+                "unit": "d",
+                "read": true,
+                "write": false
+            },
+            "native": {}
         }
     ]
 }

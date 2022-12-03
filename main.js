@@ -186,6 +186,9 @@ class MyMuell extends utils.Adapter {
 			await this.setStateAsync('next.date', { val: nextElement.day , ack: true });
 			await this.setStateAsync('next.desc', { val: nextElement.description , ack: true });
 			await this.setStateAsync('next.type', { val: nextElement.trash_name , ack: true });
+			const diff = this.getTimeDiff(new Date(nextElement.day));
+			await this.setStateAsync('next.countdown', { val: (await diff).valueOf() , ack: true });
+
 		}
 		this.log.debug (`Start create / Update states for each waste type`);
 
@@ -273,6 +276,46 @@ class MyMuell extends utils.Adapter {
 			});
 			await this.setStateAsync(`${objectid}.next_date`, { val: trashItem.day , ack: true });
 
+			//create and set next countdown
+			await this.setObjectNotExistsAsync(`${objectid}.countdown`, {
+				type: 'state',
+				common: {
+					name: {
+						en: 'Countdown',
+						de: 'Countdown',
+						ru: 'Отсчет',
+						pt: 'Contagem',
+						nl: 'Aftellen',
+						fr: 'Compte à rebours',
+						it: 'Conteggio',
+						es: 'Cuenta atrás',
+						pl: 'Countdown',
+						uk: 'Відправити',
+						'zh-cn': '倒数'
+					},
+					desc: {
+						en: 'Countdown in days',
+						de: 'Countdown in Tagen',
+						ru: 'Отсчет в дни',
+						pt: 'Contagem regressiva em dias',
+						nl: 'Aftellen in dagen',
+						fr: 'Compte à rebours en jours',
+						it: 'Conto alla rovescia nei giorni',
+						es: 'Cuenta atrás en días',
+						pl: 'Countdown w dni',
+						uk: 'Відлік в день',
+						'zh-cn': 'A. 日内降'
+					},
+					type: 'number',
+					role: 'value.interval',
+					unit: 'd',
+					read: true,
+					write: false,
+				},
+				native: {},
+			});
+			await this.setStateAsync(`${objectid}.countdown`, { val: (await this.getTimeDiff(new Date(trashItem.day))).valueOf() , ack: true });
+
 			//create and set description
 			await this.setObjectNotExistsAsync(`${objectid}.next_desc`, {
 				type: 'state',
@@ -300,6 +343,19 @@ class MyMuell extends utils.Adapter {
 			await this.setStateAsync(`${objectid}.next_desc`, { val: trashItem.description , ack: true });
 
 		}
+	}
+
+	/**
+	 * @param {Date} date
+	 */
+	async getTimeDiff(date){
+		const now = new Date();
+		//reset time of day to get fullday difference
+		now.setHours (0,0,0,0);
+		date.setHours(0,0,0,0);
+
+		const Difference_In_Time = date.getTime() - now.getTime();
+		return Math.round(Difference_In_Time / (1000 * 3600 * 24));
 	}
 
 }
