@@ -40,6 +40,7 @@ class MyMuell extends utils.Adapter {
 		// this.config:
 		this.log.debug('config City: ' + this.config.cityId);
 		this.log.debug('config AreaID: ' + this.config.areaId);
+		this.log.debug(`config All Dates: ${this.config.saveAllDates} with max ${this.config.maxNumberOfDates} days`);
 
 		if (isNaN(this.config.areaId)){
 			this.log.error ('no AreaID specified, check Adapter configuration');
@@ -153,8 +154,14 @@ class MyMuell extends utils.Adapter {
 
 		let /** @type {any} */ nextElement;
 		const nextByType = new Map();
+		const allByDate = new Map();
 
-		//Loop all Trash Items from MyMuell
+		///////////////////////////////////////////////////////////////
+		// 1. Loop all Trash Items from MyMuell Api Call and determine
+		//    - next Item to be collected
+		//	  - next Day for each Type of wast
+		//	  - sorted list by Date
+		////////////////////////////////////////////////////////////////
 		data.forEach((/** @type {any} */ element) => {
 			this.log.debug(`process line ${JSON.stringify(element)}`);
 
@@ -174,9 +181,15 @@ class MyMuell extends utils.Adapter {
 				//neuer Typ als ersten Eintrag hinzufügen
 				nextByType.set(element.trash_name, element);
 			}
+
+			if (this.config.saveAllDates){
+				allByDate.set(formatDateKey(element.day), element);
+			}
 		});
 
-		//Set next trash to be collected
+		///////////////////////////////////////////////////////////////
+		// 2. Set States for the next waste to be collected
+		////////////////////////////////////////////////////////////////
 		if (nextElement != null){
 
 			this.log.debug (`Update States for next Collection: ${JSON.stringify(nextElement)}`);
@@ -190,6 +203,11 @@ class MyMuell extends utils.Adapter {
 			await this.setStateAsync('next.countdown', { val: (await diff).valueOf() , ack: true });
 
 		}
+
+		///////////////////////////////////////////////////////////////
+		// 3. Create States and Set States for the next waste for each
+		//    Type of Trash.
+		////////////////////////////////////////////////////////////////
 		this.log.debug (`Start create / Update states for each waste type`);
 
 		let objectid = '';
@@ -200,152 +218,176 @@ class MyMuell extends utils.Adapter {
 
 			//create states for each type
 			objectid = 'waste.' + key;
+			await this.createAndSetStates(objectid, trashItem);
 
-			//Create device Folder by Type
-			await this.setObjectNotExistsAsync(objectid, {
-				type: 'device',
-				common: {
-					name: trashItem.title,
-				},
-				native: {},
-			});
+		}
+		///////////////////////////////////////////////////////////////
+		// 4. Sort List by Date and Create Folder for each date and
+		//    create and Set the states for the waste Collection
+		////////////////////////////////////////////////////////////////
+		if (this.config.saveAllDates){
+			this.log.debug (`Create Objects and set States for all dates`);
+			objectid = '';
 
-			//create and set color
-			await this.setObjectNotExistsAsync(`${objectid}.color`, {
-				type: 'state',
-				common: {
-					name: {
-						en: 'Color',
-						de: 'Farbe',
-						ru: 'Цвет',
-						pt: 'Cor',
-						nl: 'Color',
-						fr: 'Couleur',
-						it: 'Colore',
-						es: 'Color',
-						pl: 'Color',
-						uk: 'Колір',
-						'zh-cn': '科 法 律'
-					},
-					type: 'string',
-					role: 'level.color.rgb',
-					read: true,
-					write: false,
-				},
-				native: {},
-			});
-			await this.setStateAsync(`${objectid}.color`, { val: trashItem.color , ack: true });
+			//Set loop over collection with each type and create states and update values
+			for (const key of allByDate.keys()) {
+				const trashItem = allByDate.get(key);
+				this.log.debug (`Date ${key}: ${JSON.stringify(trashItem)}`);
 
-			//create and set name
-			await this.setObjectNotExistsAsync(`${objectid}.name`, {
-				type: 'state',
-				common: {
-					name: 'Name',
-					type: 'string',
-					role: 'text',
-					read: true,
-					write: false,
-				},
-				native: {},
-			});
-			await this.setStateAsync(`${objectid}.name`, { val: trashItem.title , ack: true });
-
-			//create and set next date
-			await this.setObjectNotExistsAsync(`${objectid}.next_date`, {
-				type: 'state',
-				common: {
-					name: {
-						en: 'Date',
-						de: 'Datum',
-						ru: 'Дата',
-						pt: 'Data',
-						nl: 'Datum',
-						fr: 'Date',
-						it: 'Data',
-						es: 'Fecha',
-						pl: 'D',
-						uk: 'Дата',
-						'zh-cn': '日期'
-					},
-					type: 'string',
-					role: 'date',
-					read: true,
-					write: false,
-				},
-				native: {},
-			});
-			await this.setStateAsync(`${objectid}.next_date`, { val: trashItem.day , ack: true });
-
-			//create and set next countdown
-			await this.setObjectNotExistsAsync(`${objectid}.countdown`, {
-				type: 'state',
-				common: {
-					name: {
-						en: 'Countdown',
-						de: 'Countdown',
-						ru: 'Отсчет',
-						pt: 'Contagem',
-						nl: 'Aftellen',
-						fr: 'Compte à rebours',
-						it: 'Conteggio',
-						es: 'Cuenta atrás',
-						pl: 'Countdown',
-						uk: 'Відправити',
-						'zh-cn': '倒数'
-					},
-					desc: {
-						en: 'Countdown in days',
-						de: 'Countdown in Tagen',
-						ru: 'Отсчет в дни',
-						pt: 'Contagem regressiva em dias',
-						nl: 'Aftellen in dagen',
-						fr: 'Compte à rebours en jours',
-						it: 'Conto alla rovescia nei giorni',
-						es: 'Cuenta atrás en días',
-						pl: 'Countdown w dni',
-						uk: 'Відлік в день',
-						'zh-cn': 'A. 日内降'
-					},
-					type: 'number',
-					role: 'value.interval',
-					unit: 'd',
-					read: true,
-					write: false,
-				},
-				native: {},
-			});
-			await this.setStateAsync(`${objectid}.countdown`, { val: (await this.getTimeDiff(new Date(trashItem.day))).valueOf() , ack: true });
-
-			//create and set description
-			await this.setObjectNotExistsAsync(`${objectid}.next_desc`, {
-				type: 'state',
-				common: {
-					name: {
-						en: 'description',
-						de: 'Beschreibung',
-						ru: 'описание',
-						pt: 'descrição',
-						nl: 'beschrijving',
-						fr: 'description',
-						it: 'descrizione',
-						es: 'descripción',
-						pl: 'opis',
-						uk: 'опис',
-						'zh-cn': '说明'
-					},
-					type: 'string',
-					role: 'text',
-					read: true,
-					write: false,
-				},
-				native: {},
-			});
-			await this.setStateAsync(`${objectid}.next_desc`, { val: trashItem.description , ack: true });
+				//create states for each date
+				objectid = 'allDates.' + key;
+				//await this.createAndSetStates(objectid, trashItem);
+			}
 
 		}
 	}
 
+	async createAndSetStates (objectid, trashItem){
+
+		//Create device Folder by Type
+		await this.setObjectNotExistsAsync(objectid, {
+			type: 'device',
+			common: {
+				name: trashItem.title,
+			},
+			native: {},
+		});
+
+		//create and set color
+		await this.setObjectNotExistsAsync(`${objectid}.color`, {
+			type: 'state',
+			common: {
+				name: {
+					en: 'Color',
+					de: 'Farbe',
+					ru: 'Цвет',
+					pt: 'Cor',
+					nl: 'Color',
+					fr: 'Couleur',
+					it: 'Colore',
+					es: 'Color',
+					pl: 'Color',
+					uk: 'Колір',
+					'zh-cn': '科 法 律'
+				},
+				type: 'string',
+				role: 'level.color.rgb',
+				read: true,
+				write: false,
+			},
+			native: {},
+		});
+		await this.setStateAsync(`${objectid}.color`, { val: trashItem.color , ack: true });
+
+		//create and set name
+		await this.setObjectNotExistsAsync(`${objectid}.name`, {
+			type: 'state',
+			common: {
+				name: 'Name',
+				type: 'string',
+				role: 'text',
+				read: true,
+				write: false,
+			},
+			native: {},
+		});
+		await this.setStateAsync(`${objectid}.name`, { val: trashItem.title , ack: true });
+
+		//create and set next date
+		await this.setObjectNotExistsAsync(`${objectid}.next_date`, {
+			type: 'state',
+			common: {
+				name: {
+					en: 'Date',
+					de: 'Datum',
+					ru: 'Дата',
+					pt: 'Data',
+					nl: 'Datum',
+					fr: 'Date',
+					it: 'Data',
+					es: 'Fecha',
+					pl: 'D',
+					uk: 'Дата',
+					'zh-cn': '日期'
+				},
+				type: 'string',
+				role: 'date',
+				read: true,
+				write: false,
+			},
+			native: {},
+		});
+		await this.setStateAsync(`${objectid}.next_date`, { val: trashItem.day , ack: true });
+
+		//create and set next countdown
+		await this.setObjectNotExistsAsync(`${objectid}.countdown`, {
+			type: 'state',
+			common: {
+				name: {
+					en: 'Countdown',
+					de: 'Countdown',
+					ru: 'Отсчет',
+					pt: 'Contagem',
+					nl: 'Aftellen',
+					fr: 'Compte à rebours',
+					it: 'Conteggio',
+					es: 'Cuenta atrás',
+					pl: 'Countdown',
+					uk: 'Відправити',
+					'zh-cn': '倒数'
+				},
+				desc: {
+					en: 'Countdown in days',
+					de: 'Countdown in Tagen',
+					ru: 'Отсчет в дни',
+					pt: 'Contagem regressiva em dias',
+					nl: 'Aftellen in dagen',
+					fr: 'Compte à rebours en jours',
+					it: 'Conto alla rovescia nei giorni',
+					es: 'Cuenta atrás en días',
+					pl: 'Countdown w dni',
+					uk: 'Відлік в день',
+					'zh-cn': 'A. 日内降'
+				},
+				type: 'number',
+				role: 'value.interval',
+				unit: 'd',
+				read: true,
+				write: false,
+			},
+			native: {},
+		});
+		await this.setStateAsync(`${objectid}.countdown`, { val: (await this.getTimeDiff(new Date(trashItem.day))).valueOf() , ack: true });
+
+		//create and set description
+		await this.setObjectNotExistsAsync(`${objectid}.next_desc`, {
+			type: 'state',
+			common: {
+				name: {
+					en: 'description',
+					de: 'Beschreibung',
+					ru: 'описание',
+					pt: 'descrição',
+					nl: 'beschrijving',
+					fr: 'description',
+					it: 'descrizione',
+					es: 'descripción',
+					pl: 'opis',
+					uk: 'опис',
+					'zh-cn': '说明'
+				},
+				type: 'string',
+				role: 'text',
+				read: true,
+				write: false,
+			},
+			native: {},
+		});
+		await this.setStateAsync(`${objectid}.next_desc`, { val: trashItem.description , ack: true });
+
+	}
 	/**
+	 * Calculated time difference in Full days from now to the given date
 	 * @param {Date} date
 	 */
 	async getTimeDiff(date){
@@ -369,4 +411,15 @@ if (require.main !== module) {
 } else {
 	// otherwise start the instance directly
 	new MyMuell();
+}
+/**
+* Format Day to YYYYMMDD to be used as device name for all Dates folder
+* @param {object} trashDay
+* @returns {string} string
+*/
+function formatDateKey(trashDay){
+	const date = new Date(trashDay);
+	const month = ('0' + (date.getMonth() + 1)).slice(-2);
+	const day = ('0' + date.getDate()).slice(-2);
+	return date.getFullYear() + month + day;
 }
