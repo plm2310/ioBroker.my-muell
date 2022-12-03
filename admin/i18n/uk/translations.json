@@ -1,0 +1,10 @@
+{
+    "my-muell adapter settings": "Налаштування адаптера для my-muell",
+    "City and Area Id can be determined by calling the following URL in a browser.": "Ідентифікатор міста та регіону можна визначити, викликавши наступну URL-адресу в браузері.",
+    "If has_streets:false applies for your city enter the city ID into CityID and AreaID.": "Якщо has_streets:false застосовується до вашого міста, введіть ідентифікатор міста в CityID і AreaID.",
+    "If has_streets:true applies for your city copy the following URL to your browser and replace [cityID] with your cityId.": "Якщо has_streets:true підходить для вашого міста, скопіюйте наведену нижче URL-адресу у свій браузер і замініть [cityID] на свій cityId.",
+    "Search your street and enter the copy the AreaID field to the configuration below": "Знайдіть свою вулицю та введіть копію поля AreaID у конфігурацію нижче",
+    "Advanced Options": "Розширені опції",
+    "Save all dates": "Зберегти всі дати",
+    "Maximum number of stored dates. Older ones will be deleted": "Максимальна кількість збережених дат. Старіші будуть видалені"
+}

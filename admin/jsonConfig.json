@@ -2,15 +2,82 @@
 	"i18n": true,
 	"type": "panel",
 	"items": {
-		"areaId": {
-			"type": "number",
-			"label": "AreaID",
+		"cityHeader":{
+			"type":"header",
+			"text": "CityID",
+			"size": 2
+		},
+
+		"descCity": {
+			"type": "staticText",
+			"label": "City and Area Id can be determined by calling the following URL in a browser.",
+			"text": "City and Area Id can be determined by calling the following URL in a browser.",
+			"newLine": true
+		},
+		"linkCity":{
+			"type": "staticLink",
+			"href": "https://mymuell.jumomind.com/mmapp/loxone/lox.php?r=cities",
+			"text": "https://mymuell.jumomind.com/mmapp/loxone/lox.php?r=cities",
+			"label": "https://mymuell.jumomind.com/mmapp/loxone/lox.php?r=cities",
+			"newLine": true
+		},
+		"descCity2": {
+			"type": "staticText",
+			"label": "If has_streets:false applies for your city enter the city ID into CityID and AreaID.",
+			"text": "If has_streets:false applies for your city enter the city ID into CityID and AreaID.",
 			"newLine": true
 		},
 		"cityId": {
 			"type": "number",
 			"label": "CityID",
 			"newLine": true
+		},
+		"areaHeader":{
+			"type":"header",
+			"text": "AreaID",
+			"size": 2
+		},
+		"descArea": {
+			"type": "staticText",
+			"label": "If has_streets:true applies for your city copy the following URL to your browser and replace [cityID] with your cityId.",
+			"text": "If has_streets:true applies for your city copy the following URL to your browser and replace [cityID] with your cityId.",
+			"newLine": true
+		},
+		"linkArea":{
+			"type": "staticLink",
+			"href": "https://mymuell.jumomind.com/mmapp/api.php?r=streets&city_id=[cityId]",
+			"text": "https://mymuell.jumomind.com/mmapp/api.php?r=streets&city_id=[cityId]",
+			"label": "https://mymuell.jumomind.com/mmapp/api.php?r=streets&city_id=[cityId]",
+			"newLine": true
+		},
+		"descArea2": {
+			"type": "staticText",
+			"label": "Search your street and enter the copy the AreaID field to the configuration below",
+			"text": "Search your street and enter the copy the AreaID field to the configuration below",
+			"newLine": true
+		},
+		"areaId": {
+			"type": "number",
+			"label": "AreaID",
+			"newLine": true
+		},
+		"advancedHeader":{
+			"type":"header",
+			"text": "Advanced Options",
+			"size": 2
+		},
+		"saveAllDates":{
+			"type": "checkbox",
+			"label": "Save all dates",
+			"newLine": true
+		},
+		"maxNumberOfDates": {
+			"type": "number",
+			"label": "Maximum number of stored dates. Older ones will be deleted",
+			"newLine": true,
+			"min": 10,
+			"max": 365
 		}
+		
 	}
 }

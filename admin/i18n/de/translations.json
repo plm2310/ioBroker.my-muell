@@ -1,5 +1,12 @@
 {
-	"my-muell adapter settings": "Adaptereinstellungen für my-muell",
-	"option1": "Option 1",
-	"option2": "Option 2"
+    "my-muell adapter settings": "Adaptereinstellungen für my-muell",
+    "option1": "Option 1",
+    "option2": "Option 2",
+    "City and Area Id can be determined by calling the following URL in a browser.": "CityID- und Area-ID können durch Aufrufen der folgenden URL in einem Browser ermittelt werden.",
+    "If has_streets:false applies for your city enter the city ID into CityID and AreaID.": "Wenn für Ihre Stadt has_streets:false gilt, tragen Sie die Stadt-ID in CityID und AreaID ein.",
+    "If has_streets:true applies for your city copy the following URL to your browser and replace [cityID] with your cityId.": "Wenn für Ihre Stadt has_streets:true zutrifft, kopieren Sie die folgende URL in Ihren Browser und ersetzen Sie [cityID] durch Ihre cityId.",
+    "Search your street and enter the copy the AreaID field to the configuration below": "Suchen Sie Ihre Straße und geben Sie das Feld „AreaID“ in die Konfiguration unten ein",
+    "Advanced Options": "Erweiterte Optionen",
+    "Save all dates": "Alle Termine speichern",
+    "Maximum number of stored dates. Older ones will be deleted": "Maximale Anzahl gespeicherter Termine. Ältere werden gelöscht"
 }

@@ -1,5 +1,12 @@
 {
-	"my-muell adapter settings": "Adapterinstellingen voor my-muell",
-	"option1": "Optie 1",
-	"option2": "Optie 2"
+    "my-muell adapter settings": "Adapterinstellingen voor my-muell",
+    "option1": "Optie 1",
+    "option2": "Optie 2",
+    "City and Area Id can be determined by calling the following URL in a browser.": "Stad- en gebieds-ID kunnen worden bepaald door de volgende URL in een browser aan te roepen.",
+    "If has_streets:false applies for your city enter the city ID into CityID and AreaID.": "Als has_streets:false van toepassing is op uw stad, voert u het stads-ID in bij CityID en AreaID.",
+    "If has_streets:true applies for your city copy the following URL to your browser and replace [cityID] with your cityId.": "Als has_streets:true van toepassing is op uw stad, kopieert u de volgende URL naar uw browser en vervangt u [cityID] door uw cityId.",
+    "Search your street and enter the copy the AreaID field to the configuration below": "Zoek in uw straat en voer het veld AreaID in de configuratie hieronder in",
+    "Advanced Options": "Geavanceerde mogelijkheden",
+    "Save all dates": "Bewaar alle data",
+    "Maximum number of stored dates. Older ones will be deleted": "Maximaal aantal opgeslagen datums. Oudere worden verwijderd"
 }

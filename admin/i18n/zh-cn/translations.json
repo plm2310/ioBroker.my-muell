@@ -1,5 +1,12 @@
 {
-	"my-muell adapter settings": "my-muell的适配器设置",
-	"option1": "选项1",
-	"option2": "选项2"
+    "my-muell adapter settings": "my-muell的适配器设置",
+    "option1": "选项1",
+    "option2": "选项2",
+    "City and Area Id can be determined by calling the following URL in a browser.": "可以通过在浏览器中调用以下 URL 来确定城市和区域 Id。",
+    "If has_streets:false applies for your city enter the city ID into CityID and AreaID.": "如果 has_streets:false 适用于您的城市，请在 CityID 和 AreaID 中输入城市 ID。",
+    "If has_streets:true applies for your city copy the following URL to your browser and replace [cityID] with your cityId.": "如果 has_streets:true 适用于您的城市，请将以下 URL 复制到您的浏览器并将 [cityID] 替换为您的 cityId。",
+    "Search your street and enter the copy the AreaID field to the configuration below": "搜索您的街道并输入将 AreaID 字段复制到下面的配置",
+    "Advanced Options": "高级选项",
+    "Save all dates": "保存所有日期",
+    "Maximum number of stored dates. Older ones will be deleted": "存储日期的最大数量。旧的将被删除"
 }
