@@ -208,10 +208,22 @@ class MyMuell extends utils.Adapter {
 			});
 
 			//create and set color
-			await this.setObjectNotExistsAsync(objectid + '.color', {
+			await this.setObjectNotExistsAsync(`${objectid}.color`, {
 				type: 'state',
 				common: {
-					name: 'Color',
+					name: {
+						en: 'Color',
+						de: 'Farbe',
+						ru: 'Цвет',
+						pt: 'Cor',
+						nl: 'Color',
+						fr: 'Couleur',
+						it: 'Colore',
+						es: 'Color',
+						pl: 'Color',
+						uk: 'Колір',
+						'zh-cn': '科 法 律'
+					},
 					type: 'string',
 					role: 'level.color.rgb',
 					read: true,
@@ -219,10 +231,10 @@ class MyMuell extends utils.Adapter {
 				},
 				native: {},
 			});
-			await this.setStateAsync(objectid + '.color', { val: trashItem.color , ack: true });
+			await this.setStateAsync(`${objectid}.color`, { val: trashItem.color , ack: true });
 
 			//create and set name
-			await this.setObjectNotExistsAsync(objectid + '.name', {
+			await this.setObjectNotExistsAsync(`${objectid}.name`, {
 				type: 'state',
 				common: {
 					name: 'Name',
@@ -233,13 +245,25 @@ class MyMuell extends utils.Adapter {
 				},
 				native: {},
 			});
-			await this.setStateAsync(objectid + '.name', { val: trashItem.title , ack: true });
+			await this.setStateAsync(`${objectid}.name`, { val: trashItem.title , ack: true });
 
 			//create and set next date
-			await this.setObjectNotExistsAsync(objectid + '.next_date', {
+			await this.setObjectNotExistsAsync(`${objectid}.next_date`, {
 				type: 'state',
 				common: {
-					name: 'Name',
+					name: {
+						en: 'Date',
+						de: 'Datum',
+						ru: 'Дата',
+						pt: 'Data',
+						nl: 'Datum',
+						fr: 'Date',
+						it: 'Data',
+						es: 'Fecha',
+						pl: 'D',
+						uk: 'Дата',
+						'zh-cn': '日期'
+					},
 					type: 'string',
 					role: 'date',
 					read: true,
@@ -247,13 +271,25 @@ class MyMuell extends utils.Adapter {
 				},
 				native: {},
 			});
-			await this.setStateAsync(objectid + '.next_date', { val: trashItem.day , ack: true });
+			await this.setStateAsync(`${objectid}.next_date`, { val: trashItem.day , ack: true });
 
 			//create and set description
-			await this.setObjectNotExistsAsync(objectid + '.next_desc', {
+			await this.setObjectNotExistsAsync(`${objectid}.next_desc`, {
 				type: 'state',
 				common: {
-					name: 'Name',
+					name: {
+						en: 'description',
+						de: 'Beschreibung',
+						ru: 'описание',
+						pt: 'descrição',
+						nl: 'beschrijving',
+						fr: 'description',
+						it: 'descrizione',
+						es: 'descripción',
+						pl: 'opis',
+						uk: 'опис',
+						'zh-cn': '说明'
+					},
 					type: 'string',
 					role: 'text',
 					read: true,
@@ -261,7 +297,7 @@ class MyMuell extends utils.Adapter {
 				},
 				native: {},
 			});
-			await this.setStateAsync(objectid + '.next_desc', { val: trashItem.description , ack: true });
+			await this.setStateAsync(`${objectid}.next_desc`, { val: trashItem.description , ack: true });
 
 		}
 	}
