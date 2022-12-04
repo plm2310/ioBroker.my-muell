@@ -68,8 +68,8 @@
         ]
     },
     "native": {
-        "areaId": 1984,
-        "cityId": 1984,
+        "areaId": 9999,
+        "cityId": 9999,
         "saveAllDates": false,
         "maxNumberOfDates": 20
     },
