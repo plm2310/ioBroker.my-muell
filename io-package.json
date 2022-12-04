@@ -30,6 +30,18 @@
         "uk": "початковий випуск"
       }
     },
+    "titleLang": {
+      "en": "My Müll",
+      "de": "Mein Müll",
+      "ru": "Мой Мюль",
+      "pt": "Meu Müll",
+      "nl": "Mijn Müll",
+      "fr": "Mon Mull",
+      "it": "Il mio Mull",
+      "es": "mi mull",
+      "pl": "Moja Müll",
+      "zh-cn": "我的缪尔"
+    },
     "desc": {
       "en": "Use unoffical API https://mymuell.jumomind.com/mmapp/api.php to read MyMüll.de waste schedule",
       "de": "Abfrage the My-Müll.de Abfuhrtermine über die API https://mymuell.jumomind.com/mmapp/api.php",

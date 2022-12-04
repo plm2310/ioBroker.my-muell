@@ -29,12 +29,11 @@ The Adapter is scheduled by default to run every 12 hours. As the Adapter is als
 ## Changelog
 <!--
 	Placeholder for the next version (at the beginning of the line):
-	(Michael Ploch) First version ready for Test
 	### **WORK IN PROGRESS**
 -->
 
 ### **WORK IN PROGRESS**
-* (Michael Ploch) initial release
+* (Michael Ploch) initial release for testing
 
 ## License
 MIT License

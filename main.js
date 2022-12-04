@@ -68,7 +68,7 @@ class MyMuell extends utils.Adapter {
 			}
 
 			//delete Old Date Channels whcih are in the past
-			this.deleteOldDateChannels();
+			await this.deleteOldDateChannels();
 
 		} catch (error) {
 			// Handle errors
@@ -253,7 +253,7 @@ class MyMuell extends utils.Adapter {
 
 		let delCounter = 0;
 
-		this.log.debug ('Check Channels in the Past in AllDates to be deleted')
+		this.log.debug ('Check Channels in the Past in AllDates to be deleted');
 		for (let i = 0; i < dateChannels.length; i++){
 			const channelString = dateChannels[i]._id.substring(dateChannels[i]._id.lastIndexOf('.')+1);
 			if (channelString < todayString){
