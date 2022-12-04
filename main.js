@@ -67,6 +67,9 @@ class MyMuell extends utils.Adapter {
 				this.log.error (`Error on API Call. Return: ${res.statusText} statuscode: ${res.status}`);
 			}
 
+			//delete Old Date Channels whcih are in the past
+			this.deleteOldDateChannels();
+
 		} catch (error) {
 			// Handle errors
 			this.log.error(`Error in API-Call: ${error}`);
@@ -184,7 +187,9 @@ class MyMuell extends utils.Adapter {
 			}
 
 			if (this.config.saveAllDates){
-				allByDate.set(formatDateKey(element.day), element);
+				if (allByDate.size < this.config.maxNumberOfDates){
+					allByDate.set(formatDateKey(element.day), element);
+				}
 			}
 		});
 
@@ -220,7 +225,6 @@ class MyMuell extends utils.Adapter {
 			//create states for each type
 			objectid = 'waste.' + key;
 			await this.createAndSetStates(objectid, trashItem, nodeTypeTrash);
-
 		}
 		///////////////////////////////////////////////////////////////
 		// 4. Sort List by Date and Create Folder for each date and
@@ -239,7 +243,27 @@ class MyMuell extends utils.Adapter {
 				objectid = 'allDates.' + key;
 				await this.createAndSetStates(objectid, trashItem, nodeTypeDate);
 			}
+		}
+	}
 
+	async deleteOldDateChannels (){
+		const dateChannels = await this.getChannelsOfAsync('allDates');
+		const now = new Date();
+		const todayString = formatDateKey (now);
+
+		let delCounter = 0;
+
+		this.log.debug ('Check Channels in the Past in AllDates to be deleted')
+		for (let i = 0; i < dateChannels.length; i++){
+			const channelString = dateChannels[i]._id.substring(dateChannels[i]._id.lastIndexOf('.')+1);
+			if (channelString < todayString){
+				this.log.debug (`Delete Channel: ${dateChannels[i]._id}`);
+				this.delObjectAsync (dateChannels[i]._id);
+				delCounter = delCounter + 1;
+			}
+		}
+		if (delCounter > 0){
+			this.log.info (`Deleted ${delCounter} outdated Channels in Folder AllDates`);
 		}
 	}
 

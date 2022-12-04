@@ -47,7 +47,7 @@
         "readme": "https://github.com/plm2310/ioBroker.my-muell/blob/main/README.md",
         "loglevel": "info",
         "mode": "schedule",
-        "schedule": "*/5 * * * *",
+        "schedule": "* */12 * * *",
         "allowInit": true,
         "type": "misc-data",
         "compact": true,
