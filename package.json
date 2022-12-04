@@ -1,6 +1,6 @@
 {
   "name": "iobroker.my-muell",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Use unoffical API https://mymuell.jumomind.com/mmapp/api.php to read MyMüll waste schedule",
   "author": {
     "name": "Michael Ploch",
