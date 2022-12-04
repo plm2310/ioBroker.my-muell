@@ -17,20 +17,6 @@
                 "uk": "початковий випуск"
             }
         },
-        "title": "My Müll",
-        "titleLang": {
-            "en": "My Müll",
-            "de": "Mein Müll",
-            "ru": "Мой Мюль",
-            "pt": "Meu Müll",
-            "nl": "Mijn Müll",
-            "fr": "Mon Mull",
-            "it": "Il mio Mull",
-            "es": "mi mull",
-            "pl": "Moja Müll",
-            "zh-cn": "我的缪尔",
-            "uk": "Мій Мюль"
-        },
         "desc": {
             "en": "Use unoffical API https://mymuell.jumomind.com/mmapp/api.php to read MyMüll waste schedule",
             "de": "Verwenden Sie die inoffizielle API https://mymuell.jumomind.com/mmapp/api.php, um den MyMüll-Abfallplan zu lesen",
@@ -165,7 +151,7 @@
             "common": {
                 "name": {
                     "en": "next Date",
-                    "de": "nächstes Datum",
+                    "de": "nächster Termin",
                     "ru": "следующий Дата",
                     "pt": "data seguinte",
                     "nl": "volgende datum",
@@ -178,7 +164,7 @@
                 },
                 "desc": {
                     "en": "next Date",
-                    "de": "nächstes Datum",
+                    "de": "nächster Termin",
                     "ru": "следующий Дата",
                     "pt": "data seguinte",
                     "nl": "volgende datum",
@@ -412,6 +398,39 @@
                 "unit": "d",
                 "read": true,
                 "write": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "allDates",
+            "type": "device",
+            "common": {
+                "name": {
+                    "en": "all Dates",
+                    "de": "alle Termine",
+                    "ru": "все даты",
+                    "pt": "todas as datas",
+                    "nl": "alle datums",
+                    "fr": "toutes les dates",
+                    "it": "tutte le date",
+                    "es": "all Dates",
+                    "pl": "wszystkich",
+                    "uk": "всі дати",
+                    "zh-cn": "所有日期"
+                },
+                "desc": {
+                    "en": "all Dates",
+                    "de": "alle Termine",
+                    "ru": "все даты",
+                    "pt": "todas as datas",
+                    "nl": "alle datums",
+                    "fr": "toutes les dates",
+                    "it": "tutte le date",
+                    "es": "all Dates",
+                    "pl": "wszystkich",
+                    "uk": "всі дати",
+                    "zh-cn": "所有日期"
+                }
             },
             "native": {}
         }

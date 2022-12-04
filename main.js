@@ -9,7 +9,8 @@
 const utils = require('@iobroker/adapter-core');
 const axios = require('axios').default;
 
-
+const nodeTypeTrash = 'TRASH';
+const nodeTypeDate = 'DATE';
 // Load your modules here, e.g.:
 // const fs = require("fs");
 
@@ -218,7 +219,7 @@ class MyMuell extends utils.Adapter {
 
 			//create states for each type
 			objectid = 'waste.' + key;
-			await this.createAndSetStates(objectid, trashItem);
+			await this.createAndSetStates(objectid, trashItem, nodeTypeTrash);
 
 		}
 		///////////////////////////////////////////////////////////////
@@ -236,22 +237,61 @@ class MyMuell extends utils.Adapter {
 
 				//create states for each date
 				objectid = 'allDates.' + key;
-				//await this.createAndSetStates(objectid, trashItem);
+				await this.createAndSetStates(objectid, trashItem, nodeTypeDate);
 			}
 
 		}
 	}
 
-	async createAndSetStates (objectid, trashItem){
+	async createAndSetStates (objectid, trashItem, nodeType){
+		if (nodeType == nodeTypeTrash){
+			//Create device Folder by Type
+			await this.setObjectNotExistsAsync(objectid, {
+				type: 'device',
+				common: {
+					name: trashItem.title,
+				},
+				native: {},
+			});
+		}
 
-		//Create device Folder by Type
-		await this.setObjectNotExistsAsync(objectid, {
-			type: 'device',
-			common: {
-				name: trashItem.title,
-			},
-			native: {},
-		});
+		if(nodeType == nodeTypeDate){
+			//Create channel for each date
+			await this.setObjectNotExistsAsync(objectid, {
+				type: 'channel',
+				common: {
+					name: trashItem.title,
+				},
+				native: {},
+			});
+
+			//add Type to each date:
+			//create and set color
+			await this.setObjectNotExistsAsync(`${objectid}.type`, {
+				type: 'state',
+				common: {
+					name: {
+						en: 'Type',
+						de: 'Art',
+						ru: 'Тип',
+						pt: 'Tipo',
+						nl: 'Type',
+						fr: 'Type',
+						it: 'Tipo',
+						es: 'Tipo',
+						pl: 'Typ',
+						uk: 'Тип',
+						'zh-cn': '类型'
+					},
+					type: 'string',
+					role: 'text',
+					read: true,
+					write: false,
+				},
+				native: {},
+			});
+			await this.setStateAsync(`${objectid}.type`, { val: trashItem.trash_name , ack: true });
+		}
 
 		//create and set color
 		await this.setObjectNotExistsAsync(`${objectid}.color`, {
@@ -319,45 +359,47 @@ class MyMuell extends utils.Adapter {
 		});
 		await this.setStateAsync(`${objectid}.next_date`, { val: trashItem.day , ack: true });
 
-		//create and set next countdown
-		await this.setObjectNotExistsAsync(`${objectid}.countdown`, {
-			type: 'state',
-			common: {
-				name: {
-					en: 'Countdown',
-					de: 'Countdown',
-					ru: 'Отсчет',
-					pt: 'Contagem',
-					nl: 'Aftellen',
-					fr: 'Compte à rebours',
-					it: 'Conteggio',
-					es: 'Cuenta atrás',
-					pl: 'Countdown',
-					uk: 'Відправити',
-					'zh-cn': '倒数'
+		if (nodeType == nodeTypeTrash){
+			//create and set next countdown
+			await this.setObjectNotExistsAsync(`${objectid}.countdown`, {
+				type: 'state',
+				common: {
+					name: {
+						en: 'Countdown',
+						de: 'Countdown',
+						ru: 'Отсчет',
+						pt: 'Contagem',
+						nl: 'Aftellen',
+						fr: 'Compte à rebours',
+						it: 'Conteggio',
+						es: 'Cuenta atrás',
+						pl: 'Countdown',
+						uk: 'Відправити',
+						'zh-cn': '倒数'
+					},
+					desc: {
+						en: 'Countdown in days',
+						de: 'Countdown in Tagen',
+						ru: 'Отсчет в дни',
+						pt: 'Contagem regressiva em dias',
+						nl: 'Aftellen in dagen',
+						fr: 'Compte à rebours en jours',
+						it: 'Conto alla rovescia nei giorni',
+						es: 'Cuenta atrás en días',
+						pl: 'Countdown w dni',
+						uk: 'Відлік в день',
+						'zh-cn': 'A. 日内降'
+					},
+					type: 'number',
+					role: 'value.interval',
+					unit: 'd',
+					read: true,
+					write: false,
 				},
-				desc: {
-					en: 'Countdown in days',
-					de: 'Countdown in Tagen',
-					ru: 'Отсчет в дни',
-					pt: 'Contagem regressiva em dias',
-					nl: 'Aftellen in dagen',
-					fr: 'Compte à rebours en jours',
-					it: 'Conto alla rovescia nei giorni',
-					es: 'Cuenta atrás en días',
-					pl: 'Countdown w dni',
-					uk: 'Відлік в день',
-					'zh-cn': 'A. 日内降'
-				},
-				type: 'number',
-				role: 'value.interval',
-				unit: 'd',
-				read: true,
-				write: false,
-			},
-			native: {},
-		});
-		await this.setStateAsync(`${objectid}.countdown`, { val: (await this.getTimeDiff(new Date(trashItem.day))).valueOf() , ack: true });
+				native: {},
+			});
+			await this.setStateAsync(`${objectid}.countdown`, { val: (await this.getTimeDiff(new Date(trashItem.day))).valueOf() , ack: true });
+		}
 
 		//create and set description
 		await this.setObjectNotExistsAsync(`${objectid}.next_desc`, {
@@ -384,7 +426,6 @@ class MyMuell extends utils.Adapter {
 			native: {},
 		});
 		await this.setStateAsync(`${objectid}.next_desc`, { val: trashItem.description , ack: true });
-
 	}
 	/**
 	 * Calculated time difference in Full days from now to the given date
