@@ -33,6 +33,7 @@ The Adapter is scheduled by default to run every 12 hours. As the Adapter is als
 -->
 ### **WORK IN PROGRESS**
 * fixed deletion of old date channels
+* used date format from system config
 
 ### 0.1.1 (2022-12-04)
 * (Michael Ploch) initial release for testing

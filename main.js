@@ -1,5 +1,4 @@
 'use strict';
-
 /*
  * Created with @iobroker/create-adapter v2.3.0
  */
@@ -23,6 +22,7 @@ class MyMuell extends utils.Adapter {
 		super({
 			...options,
 			name: 'my-muell',
+			useFormatDate: true
 		});
 		this.on('ready', this.onReady.bind(this));
 		this.on('stateChange', this.onStateChange.bind(this));
@@ -97,23 +97,6 @@ class MyMuell extends utils.Adapter {
 		}
 	}
 
-	// If you need to react to object changes, uncomment the following block and the corresponding line in the constructor.
-	// You also need to subscribe to the objects with `this.subscribeObjects`, similar to `this.subscribeStates`.
-	// /**
-	//  * Is called if a subscribed object changes
-	//  * @param {string} id
-	//  * @param {ioBroker.Object | null | undefined} obj
-	//  */
-	// onObjectChange(id, obj) {
-	// 	if (obj) {
-	// 		// The object was changed
-	// 		this.log.info(`object ${id} changed: ${JSON.stringify(obj)}`);
-	// 	} else {
-	// 		// The object was deleted
-	// 		this.log.info(`object ${id} deleted`);
-	// 	}
-	// }
-
 	/**
 	 * Is called if a subscribed state changes
 	 * @param {string} id
@@ -128,24 +111,6 @@ class MyMuell extends utils.Adapter {
 			this.log.info(`state ${id} deleted`);
 		}
 	}
-
-	// If you need to accept messages in your adapter, uncomment the following block and the corresponding line in the constructor.
-	// /**
-	//  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
-	//  * Using this method requires "common.messagebox" property to be set to true in io-package.json
-	//  * @param {ioBroker.Message} obj
-	//  */
-	// onMessage(obj) {
-	// 	if (typeof obj === 'object' && obj.message) {
-	// 		if (obj.command === 'send') {
-	// 			// e.g. send email or pushover or whatever
-	// 			this.log.info('send command');
-
-	// 			// Send response in callback if required
-	// 			if (obj.callback) this.sendTo(obj.from, obj.command, 'Message received', obj.callback);
-	// 		}
-	// 	}
-	// }
 
 	/**
 	 * @param {object[]} data
@@ -199,10 +164,12 @@ class MyMuell extends utils.Adapter {
 		if (nextElement != null){
 
 			this.log.debug (`Update States for next Collection: ${JSON.stringify(nextElement)}`);
+
 			// Set States for next Date:
 			await this.setStateAsync('next.name', { val: nextElement.title , ack: true });
 			await this.setStateAsync('next.color', { val: nextElement.color , ack: true });
-			await this.setStateAsync('next.date', { val: nextElement.day , ack: true });
+			// @ts-ignore
+			await this.setStateAsync('next.date', { val: this.formatDate(nextElement.day) , ack: true });
 			await this.setStateAsync('next.desc', { val: nextElement.description , ack: true });
 			await this.setStateAsync('next.type', { val: nextElement.trash_name , ack: true });
 			const diff = this.getTimeDiff(new Date(nextElement.day));
@@ -381,7 +348,9 @@ class MyMuell extends utils.Adapter {
 			},
 			native: {},
 		});
-		await this.setStateAsync(`${objectid}.next_date`, { val: trashItem.day , ack: true });
+
+		// @ts-ignore
+		await this.setStateAsync(`${objectid}.next_date`, { val: this.formatDate(trashItem.day) , ack: true });
 
 		if (nodeType == nodeTypeTrash){
 			//create and set next countdown
