@@ -256,9 +256,9 @@ class MyMuell extends utils.Adapter {
 		this.log.debug ('Check Channels in the Past in AllDates to be deleted');
 		for (let i = 0; i < dateChannels.length; i++){
 			const channelString = dateChannels[i]._id.substring(dateChannels[i]._id.lastIndexOf('.')+1);
-			if (channelString < todayString){
+			if (channelString < todayString && channelString.length == 8){
 				this.log.debug (`Delete Channel: ${dateChannels[i]._id}`);
-				this.delObjectAsync (dateChannels[i]._id);
+				await this.delObjectAsync (dateChannels[i]._id, { recursive: true });
 				delCounter = delCounter + 1;
 			}
 		}
