@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "my-muell",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "news": {
+      "0.1.2": {
+        "en": "fixed deletion of old date channels\nused date format from system config",
+        "de": "Fehler beim Löschen von alten datumskanälen\ngNutzen des Datumsformat der System config",
+        "ru": "фиксированное удаление старых каналов даты\nиспользованный формат даты от config системы",
+        "pt": "eliminação fixa dos canais de data antiga\nformato de data usado da configuração do sistema",
+        "nl": "verwijdering van oude datumkanalen\nvertaling:",
+        "fr": "suppression fixe des anciennes chaînes de date\nformat de date utilisé à partir de la configuration système",
+        "it": "cancellazione fissa di vecchi canali di data\nformato data utilizzato da system config",
+        "es": "eliminación fija de canales de fecha vieja\nformato de fecha usado del sistema",
+        "pl": "usunięto stare kanały\nformat standardu",
+        "uk": "фіксоване видалення старих каналів дати\njavascript licenses api веб-сайт go1.13.8",
+        "zh-cn": "固定删除旧日期的渠道\na. 从系统上使用的日期格式"
+      },
       "0.1.1": {
         "en": "initial release for testing",
         "de": "erstauslösung für tests",
