@@ -357,7 +357,7 @@ class MyMuell extends utils.Adapter {
 		// @ts-ignore
 		await this.setStateAsync(`${objectid}.date`, { val: this.formatDate(trashItem.day) , ack: true });
 
-		if (nodeType == nodeTypeTrash){
+//		if (nodeType == nodeTypeTrash){
 			//create and set next countdown
 			await this.setObjectNotExistsAsync(`${objectid}.countdown`, {
 				type: 'state',
@@ -397,7 +397,7 @@ class MyMuell extends utils.Adapter {
 				native: {},
 			});
 			await this.setStateAsync(`${objectid}.countdown`, { val: (await this.getTimeDiff(new Date(trashItem.day))).valueOf() , ack: true });
-		}
+//		}
 
 		//create and set description
 		await this.setObjectNotExistsAsync(`${objectid}.desc`, {
