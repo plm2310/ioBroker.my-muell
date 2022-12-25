@@ -357,47 +357,45 @@ class MyMuell extends utils.Adapter {
 		// @ts-ignore
 		await this.setStateAsync(`${objectid}.date`, { val: this.formatDate(trashItem.day) , ack: true });
 
-//		if (nodeType == nodeTypeTrash){
-			//create and set next countdown
-			await this.setObjectNotExistsAsync(`${objectid}.countdown`, {
-				type: 'state',
-				common: {
-					name: {
-						en: 'Countdown',
-						de: 'Countdown',
-						ru: 'Отсчет',
-						pt: 'Contagem',
-						nl: 'Aftellen',
-						fr: 'Compte à rebours',
-						it: 'Conteggio',
-						es: 'Cuenta atrás',
-						pl: 'Countdown',
-						uk: 'Відправити',
-						'zh-cn': '倒数'
-					},
-					desc: {
-						en: 'Countdown in days',
-						de: 'Countdown in Tagen',
-						ru: 'Отсчет в дни',
-						pt: 'Contagem regressiva em dias',
-						nl: 'Aftellen in dagen',
-						fr: 'Compte à rebours en jours',
-						it: 'Conto alla rovescia nei giorni',
-						es: 'Cuenta atrás en días',
-						pl: 'Countdown w dni',
-						uk: 'Відлік в день',
-						'zh-cn': 'A. 日内降'
-					},
-					type: 'number',
-					role: 'value.interval',
-					unit: 'd',
-					read: true,
-					write: false,
+		//create and set next countdown
+		await this.setObjectNotExistsAsync(`${objectid}.countdown`, {
+			type: 'state',
+			common: {
+				name: {
+					en: 'Countdown',
+					de: 'Countdown',
+					ru: 'Отсчет',
+					pt: 'Contagem',
+					nl: 'Aftellen',
+					fr: 'Compte à rebours',
+					it: 'Conteggio',
+					es: 'Cuenta atrás',
+					pl: 'Countdown',
+					uk: 'Відправити',
+					'zh-cn': '倒数'
 				},
-				native: {},
-			});
-			await this.setStateAsync(`${objectid}.countdown`, { val: (await this.getTimeDiff(new Date(trashItem.day))).valueOf() , ack: true });
-//		}
+				desc: {
+					en: 'Countdown in days',
+					de: 'Countdown in Tagen',
+					ru: 'Отсчет в дни',
+					pt: 'Contagem regressiva em dias',
+					nl: 'Aftellen in dagen',
+					fr: 'Compte à rebours en jours',
+					it: 'Conto alla rovescia nei giorni',
+					es: 'Cuenta atrás en días',
+					pl: 'Countdown w dni',
+					uk: 'Відлік в день',
+					'zh-cn': 'A. 日内降'
+				},
+				type: 'number',
+				role: 'value.interval',
+				unit: 'd',
+				read: true,
+				write: false,
+			},
+			native: {},
+		});
+		await this.setStateAsync(`${objectid}.countdown`, { val: (await this.getTimeDiff(new Date(trashItem.day))).valueOf() , ack: true });
 
 		//create and set description
 		await this.setObjectNotExistsAsync(`${objectid}.desc`, {
