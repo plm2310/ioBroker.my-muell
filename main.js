@@ -201,37 +201,42 @@ class MyMuell extends utils.Adapter {
 			this.log.debug (`Create Objects and set States for all dates`);
 			objectid = '';
 
+			let counter = 1;
 			//Set loop over collection with each type and create states and update values
 			for (const key of allByDate.keys()) {
 				const trashItem = allByDate.get(key);
 				this.log.debug (`Date ${key}: ${JSON.stringify(trashItem)}`);
 
-				//create states for each date
-				objectid = 'allDates.' + key;
-				await this.createAndSetStates(objectid, trashItem, nodeTypeDate);
+				if (counter <= this.config.maxNumberOfDates){
+					//create states for each date
+					if (counter <= 9){
+						objectid = 'allDates.0' + counter;
+					}else{
+						objectid = 'allDates.' + counter;
+					}
+					await this.createAndSetStates(objectid, trashItem, nodeTypeDate);
+					counter = counter +1;
+				}
 			}
 		}
 	}
 
 	async deleteOldDateChannels (){
 		const dateChannels = await this.getChannelsOfAsync('allDates');
-		const now = new Date();
-		const todayString = formatDateKey (now);
-
-		let delCounter = 0;
-
-		this.log.debug ('Check Channels in the Past in AllDates to be deleted');
-		for (let i = 0; i < dateChannels.length; i++){
-			const channelString = dateChannels[i]._id.substring(dateChannels[i]._id.lastIndexOf('.')+1);
-			if (channelString < todayString && channelString.length == 8){
-				this.log.debug (`Delete Channel: ${dateChannels[i]._id}`);
-				await this.delObjectAsync (dateChannels[i]._id, { recursive: true });
-				delCounter = delCounter + 1;
+		const deleteNumber = dateChannels.length - this.config.maxNumberOfDates;
+		if (deleteNumber > 0){
+			//to many states in all dates exists, delete  not needed ones.
+			for	(let i = this.config.maxNumberOfDates; i <= dateChannels.length; i++){
+				if (i < 10){
+					this.log.debug (`Delete Channel ID allDates.0${i}`);
+					await this.delObjectAsync(`allDates.0${i}`, { recursive: true } );
+				}else{
+					this.log.debug (`Delete Channel ID allDates.${i}`);
+					await this.delObjectAsync(`allDates.${i}`, { recursive: true } );
+				}
 			}
 		}
-		if (delCounter > 0){
-			this.log.info (`Deleted ${delCounter} outdated Channels in Folder AllDates`);
-		}
+
 	}
 
 	async createAndSetStates (objectid, trashItem, nodeType){
@@ -325,7 +330,7 @@ class MyMuell extends utils.Adapter {
 		await this.setStateAsync(`${objectid}.name`, { val: trashItem.title , ack: true });
 
 		//create and set next date
-		await this.setObjectNotExistsAsync(`${objectid}.next_date`, {
+		await this.setObjectNotExistsAsync(`${objectid}.date`, {
 			type: 'state',
 			common: {
 				name: {
@@ -350,7 +355,7 @@ class MyMuell extends utils.Adapter {
 		});
 
 		// @ts-ignore
-		await this.setStateAsync(`${objectid}.next_date`, { val: this.formatDate(trashItem.day) , ack: true });
+		await this.setStateAsync(`${objectid}.date`, { val: this.formatDate(trashItem.day) , ack: true });
 
 		if (nodeType == nodeTypeTrash){
 			//create and set next countdown
@@ -395,7 +400,7 @@ class MyMuell extends utils.Adapter {
 		}
 
 		//create and set description
-		await this.setObjectNotExistsAsync(`${objectid}.next_desc`, {
+		await this.setObjectNotExistsAsync(`${objectid}.desc`, {
 			type: 'state',
 			common: {
 				name: {
@@ -418,7 +423,7 @@ class MyMuell extends utils.Adapter {
 			},
 			native: {},
 		});
-		await this.setStateAsync(`${objectid}.next_desc`, { val: trashItem.description , ack: true });
+		await this.setStateAsync(`${objectid}.desc`, { val: trashItem.description , ack: true });
 	}
 	/**
 	 * Calculated time difference in Full days from now to the given date

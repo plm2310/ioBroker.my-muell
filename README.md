@@ -31,6 +31,10 @@ The Adapter is scheduled by default to run every 12 hours. As the Adapter is als
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* renamed states in different folders
+* numbered folders instead of date as folder name
+
 ### 0.1.2 (2022-12-16)
 * fixed deletion of old date channels
 * used date format from system config
