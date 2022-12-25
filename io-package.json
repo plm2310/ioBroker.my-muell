@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "my-muell",
-    "version": "0.1.2",
+    "version": "0.2.0",
     "news": {
+      "0.2.0": {
+        "en": "renamed states in different folders\nnumbered folders instead of date as folder name",
+        "de": "umbenannte zustände in verschiedenen ordnern\nnummerierte ordner statt datum als ordnernamen",
+        "ru": "переименованные состояния в различных папках\nнумерованные папки вместо даты как имя папки",
+        "pt": "estados renomeados em diferentes pastas\npastas numeradas em vez de data como nome da pasta",
+        "nl": "vertaling:\ngenummerde maps in plaats van te daten als mapnaam",
+        "fr": "états renommés dans différents dossiers\ndossiers numérotés au lieu de date comme nom de dossier",
+        "it": "rinominato stati in diverse cartelle\ncartelle numerate invece di data come nome della cartella",
+        "es": "estados renombrados en diferentes carpetas\ncarpetas numeradas en lugar de fecha como nombre de carpeta",
+        "pl": "nazwy stanów w różnych folderach\nliczba folderów zamiast daty nazwy",
+        "uk": "перейменовані штати в різні папки\nіменовані папки замість дати, як назва папки",
+        "zh-cn": "更名为不同编者的国家\nd. 编号而不是日期"
+      },
       "0.1.2": {
         "en": "fixed deletion of old date channels\nused date format from system config",
         "de": "Fehler beim Löschen von alten datumskanälen\ngNutzen des Datumsformat der System config",
