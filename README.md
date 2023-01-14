@@ -31,6 +31,9 @@ The Adapter is scheduled by default to run every 12 hours. As the Adapter is als
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* minimum node version >16.x
+
 ### 0.2.0 (2022-12-25)
 * renamed states in different folders
 * numbered folders instead of date as folder name
