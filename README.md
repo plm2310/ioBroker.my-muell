@@ -48,7 +48,7 @@ The Adapter is scheduled by default to run every 12 hours. As the Adapter is als
 ## License
 MIT License
 
-Copyright (c) 2022 Michael Ploch <miploch@gmail.com>
+Copyright (c) 2023 Michael Ploch <miploch@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
