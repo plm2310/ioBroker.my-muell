@@ -31,7 +31,7 @@ The Adapter is scheduled by default to run every 12 hours. As the Adapter is als
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.2.1 (2023-01-14)
 * minimum node version >16.x
 
 ### 0.2.0 (2022-12-25)

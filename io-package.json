@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "my-muell",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "news": {
+      "0.2.1": {
+        "en": "minimum node version >16.x",
+        "de": "mindestknotenversion >16.x",
+        "ru": "минимальная версия node >16.x",
+        "pt": "versão mínima do nó >16.x",
+        "nl": "minimum node versie 16",
+        "fr": "version minimum node acia16.x",
+        "it": "versione nodo minimo >16.x",
+        "es": "versión mínima del nodo",
+        "pl": "wersja minimalna >16.x",
+        "uk": "версія вузла >16.x",
+        "zh-cn": "最低限度版本 >16.x"
+      },
       "0.2.0": {
         "en": "renamed states in different folders\nnumbered folders instead of date as folder name",
         "de": "umbenannte zustände in verschiedenen ordnern\nnummerierte ordner statt datum als ordnernamen",
